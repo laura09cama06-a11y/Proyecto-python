@@ -7,24 +7,24 @@ def menu_usuario():
     print("\033[34m!Bienvenido al sistema de DevSpace {nombre_usuario}¡\033[0m\n")
     while True:
         print("\033[34mseleccione la accion que desea realizar: \033[0m")
-        print("1-ver Spaces")
-        print("2-Ver mis spaces")
-        print("3-Ver Spaces seguidos")
-        print("4-Solicitudes de amistad")
-        print("5-Cerrar sesión")
-        
-        respuesta=input("ingrese el numero de la opción deseada: ")
-        if respuesta=="1":
-            pass
-        elif respuesta=="2":
-            pass
-        elif respuesta=="3":
-            pass
-        elif respuesta=="4":
-            pass    
-        elif respuesta=="5":
-            break
-        else:
+        print("1-ver Spaces\n" 
+        "2-Ver mis spaces\n" 
+        "3-Ver Spaces seguidos\n"
+        "4-Solicitudes de amistad\n"
+        "5-Cerrar sesión\n")
+        try:
+            respuesta=int(input("ingrese el numero de la opción deseada: "))
+            if respuesta==1:
+                pass
+            elif respuesta==2:
+                pass
+            elif respuesta==3:
+                pass
+            elif respuesta==4:
+                pass    
+            elif respuesta==5:
+                break
+        except ValueError:
             print("\033c", end="")
             print("Opción no válida. Por favor, seleccione una opción válida.")
             time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
@@ -99,3 +99,6 @@ def menu_principal():
 
             print("Opción no válida. Por favor, seleccione una opción válida.")
             time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
+
+
+menu_usuario()
