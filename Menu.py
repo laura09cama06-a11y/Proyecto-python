@@ -99,6 +99,3 @@ def menu_principal():
 
             print("Opción no válida. Por favor, seleccione una opción válida.")
             time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
-
-
-menu_usuario()
