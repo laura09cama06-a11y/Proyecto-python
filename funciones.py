@@ -1,0 +1,1 @@
+#archivo para poner las funciones que se van a usar en el menu, para no saturar el codigo del menu
