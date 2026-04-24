@@ -1,6 +1,7 @@
 import time
 import devspaces.devspace as Ds
 import Posts as p
+import funciones as f
 
 def menu_usuario(username: str):
     """Establecer un menu para el usuario ingresado, con opcciones para seguir a otros usuarios, ver publicaciones,ver sus publicaciones, crear nuevas publicaciones, etc."""
@@ -8,7 +9,7 @@ def menu_usuario(username: str):
     print("\033[34m!Bienvenido al sistema de DevSpace " + username + "¡\033[0m\n")
     while True:
         print("\033[34mseleccione la accion que desea realizar: \033[0m")
-        print("1-ver Spaces\n" 
+        print("1-ver usuarios\n" 
         "2-Ver mis spaces\n" 
         "3-Ver Spaces seguidos\n"
         "4-Solicitudes de amistad\n"
@@ -17,9 +18,9 @@ def menu_usuario(username: str):
         try:
             respuesta=int(input("ingrese el numero de la opción deseada: "))
             if respuesta==1:
-                p.ver_posts(7, username)  
+                f.mostrar_usuarios()
             elif respuesta==2:
-                pass
+                f.show_own_spaces(username)
             elif respuesta==3:
                 pass
             elif respuesta==4:
@@ -44,14 +45,14 @@ def menu_ingresar_usuario() -> bool:
     """
     print("\033c", end="")
     print ("Ingresar al sistema\n")
-    nombre_usuario = input("Ingrese su nombre de usuario: ")
+    username = input("Ingrese su nombre de usuario: ")
     contrasena = input("Ingrese su contraseña: ")
 
-    success, data = Ds.login(nombre_usuario, contrasena)
+    success, data = Ds.login(username, contrasena)
     if success:
-        print("Ingreso exitoso. Bienvenido, {}.".format(nombre_usuario))
+        print("Ingreso exitoso. Bienvenido, {}.".format(username))
         # Aquí puedes agregar la lógica para mostrar el menú principal del sistema después del ingreso exitoso
-        menu_usuario(nombre_usuario)
+        menu_usuario(username)
         return True
     else:        
         print("Error al ingresar. Por favor, verifique su nombre de usuario y contraseña e intente nuevamente.") 
