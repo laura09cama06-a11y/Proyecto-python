@@ -1,24 +1,61 @@
 import devspaces.devspace as ds
 import time
-import Menu as m
-Posts=[{
 
-}]
-
-"""Función para crear un nuevo post, solicitando al usuario el título, contenido y tipo de post a crear, y luego utilizando la función create_post de la API de DevSpace para crear el post en el sistema."""
-def crear_Post_nuevo(username: str ):
+def crear_Post_nuevo(username: str):
     print("\033c", end="")
-    print("===Crear un nuevo post==\n")
-    username = input("Ingrese su nombre de usuario: ")
-    title = input("Ingrese el título del post: ")   
-    content = input("Ingrese el contenido del post: ")
-    post_type = input("Ingrese el tipo de post (post/snippet): ")   
-    success, data = ds.create_post(7, title, content, post_type)    
-    if success:
-            print("Post creado exitosamente.")
-    else:        
-            print("Error al crear el post. Por favor, intente nuevamente.")     
+    print("=== Crear un nuevo post ===\n")
 
+    # 1️ Obtener spaces del usuario
+    success, spaces = ds.get_spaces_by_user(username)
+
+    if not success or not spaces:
+        print(" No tienes spaces disponibles para publicar.")
+        time.sleep(2)
+        return
+
+    # 2️⃣ Mostrar spaces disponibles
+    print("Seleccione el Space donde desea publicar:\n")
+    for space in spaces:
+        print(f"{space['id']} - {space['name']}")
+
+    # 3️⃣ Seleccionar space
+    try:
+        space_id = int(input("\nIngrese el ID del Space: "))
+    except ValueError:
+        print(" ID inválido.")
+        time.sleep(2)
+        return
+
+    # 4️⃣ Datos del post
+    title = input("\nIngrese el título del post: ").strip()
+    description = input("Ingrese el contenido del post: ").strip()
+    visualization = input("Tipo de post (public / private): ").lower().strip()
+
+    if not title or not description:
+        print(" El título y contenido no pueden estar vacíos.")
+        time.sleep(2)
+        return
+
+    if visualization not in ("public", "private"):
+        visualization = "public"
+
+    # ✅ 5️⃣ CREAR POST (ESTA ES LA PARTE CORREGIDA)
+    success, data = ds.create_post(
+        space_id,
+        title,
+        description,
+        visualization
+    )
+    if success:
+        print(" Post creado exitosamente.")   
+    else:
+        print(" Error al crear el post:", data) 
+    time.sleep(2)
+    print("\033c", end="")
+   
+
+
+"""Función para seguir un espacio específico, solicitando al usuario el ID del espacio a seguir y utilizando la función follow_space de la API de DevSpace para seguir el espacio en el sistema."""
 def seguir_space(username: str):
     try:
         space_id = int(input("ID del space a seguir: "))
@@ -34,7 +71,7 @@ def seguir_space(username: str):
         print(" Error:", data)
         pass
 
-
+"""Funcion para ver los post de un usuario"""
 def ver_posts():
     print("\033c", end="")
     print("📄 Posts disponibles:\n")

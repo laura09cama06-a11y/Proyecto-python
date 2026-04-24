@@ -24,9 +24,11 @@ def menu_usuario(username: str):
                 pass
             elif respuesta==4:
                 pass   
-            elif respuesta==5:
+            elif respuesta == 5:
+                print("ENTRANDO A CREAR POST")
                 p.crear_Post_nuevo(username)
-            elif respuesta==6:
+            elif respuesta == 6:
+                print("\033c", end="")
                 print("Adios "+ username)
                 print("Gracias por usar DevSpace. ¡Hasta luego!")
                 time.sleep(3)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
@@ -34,12 +36,10 @@ def menu_usuario(username: str):
         except ValueError:
             print("\033c", end="")
             print("Opción no válida. Por favor, seleccione una opción válida.")
-            time.sleep(3)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
+            time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
             print("\033c", end="")
 
-
-
-def menu_ingresar_usuario()->bool:
+def menu_ingresar_usuario() -> bool:
     """Establecer el menú de opciones para el ingreso de un usuario existente en el sistema de DevSpace
     """
     print("\033c", end="")
@@ -108,7 +108,6 @@ def menu_principal():
 
             print("Opción no válida. Por favor, seleccione una opción válida.")
             time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
-
-
+            print("\033c", end="")
 if __name__ == "__main__":
-    menu_principal()
+ menu_principal()
