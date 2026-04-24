@@ -1,17 +1,19 @@
 import time
 import devspaces.devspace as Ds
+import Posts as p
 
-def menu_usuario():
-    """Establecer un menu para el usuario ingresado, con opcciones para seguir a otros usuarios, ver publicaciones,ver sus publicaciones  y cerrar sesion  """
+def menu_usuario(username: str):
+    """Establecer un menu para el usuario ingresado, con opcciones para seguir a otros usuarios, ver publicaciones,ver sus publicaciones, crear nuevas publicaciones, etc."""
     print("\033c", end="")
-    print("\033[34m!Bienvenido al sistema de DevSpace {nombre_usuario}¡\033[0m\n")
+    print("\033[34m!Bienvenido al sistema de DevSpace " + username + "¡\033[0m\n")
     while True:
         print("\033[34mseleccione la accion que desea realizar: \033[0m")
         print("1-ver Spaces\n" 
         "2-Ver mis spaces\n" 
         "3-Ver Spaces seguidos\n"
         "4-Solicitudes de amistad\n"
-        "5-Cerrar sesión\n")
+        "5-Crear Post\n"
+        "6-Cerrar sesión\n")
         try:
             respuesta=int(input("ingrese el numero de la opción deseada: "))
             if respuesta==1:
@@ -21,13 +23,20 @@ def menu_usuario():
             elif respuesta==3:
                 pass
             elif respuesta==4:
-                pass    
+                pass   
             elif respuesta==5:
+                p.crear_Post_nuevo(username)
+            elif respuesta==6:
+                print("Adios "+ username)
+                print("Gracias por usar DevSpace. ¡Hasta luego!")
+                time.sleep(3)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
                 break
         except ValueError:
             print("\033c", end="")
             print("Opción no válida. Por favor, seleccione una opción válida.")
-            time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
+            time.sleep(3)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
+            print("\033c", end="")
+
 
 
 def menu_ingresar_usuario()->bool:
@@ -42,7 +51,7 @@ def menu_ingresar_usuario()->bool:
     if success:
         print("Ingreso exitoso. Bienvenido, {}.".format(nombre_usuario))
         # Aquí puedes agregar la lógica para mostrar el menú principal del sistema después del ingreso exitoso
-        menu_usuario()
+        menu_usuario(nombre_usuario)
         return True
     else:        
         print("Error al ingresar. Por favor, verifique su nombre de usuario y contraseña e intente nuevamente.") 
@@ -99,3 +108,7 @@ def menu_principal():
 
             print("Opción no válida. Por favor, seleccione una opción válida.")
             time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
+
+
+if __name__ == "__main__":
+    menu_principal()
