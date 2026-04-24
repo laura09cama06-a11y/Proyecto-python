@@ -33,7 +33,7 @@ def crear_Post_nuevo(username: str):
     post_type = input("Tipo de post (post / snippet): ").lower().strip()
 
     if not title or not content:
-        print("El título y el contenido no pueden estar vacíos.")
+        print(" El título y el contenido no pueden estar vacíos.")
         time.sleep(2)
         return
 
@@ -48,9 +48,9 @@ def crear_Post_nuevo(username: str):
     )
 
     if success:
-        print("Post creado exitosamente.")
+        print(" Post creado exitosamente.")
     else:
-        print("Error al crear el post:", data)
+        print(" Error al crear el post:", data)
 
     time.sleep(2)
 
@@ -71,15 +71,37 @@ def seguir_space(username: str):
         pass
 
 """Funcion para ver los post de un usuario"""
-def ver_posts():
-    print("\033c", end="")
-    print("📄 Posts disponibles:\n")
+def ver_posts(space_id: int, username: str):
+    print("\n=== Posts del space ===\n")
 
-    try:
-        with open("posts.txt", "r", encoding="utf-8") as archivo:
-            contenido = archivo.read()
-            print(contenido if contenido else "No hay posts aún.")
-    except FileNotFoundError:
-        print("No hay posts aún.")
+    success, posts = ds.get_posts(space_id, username)
 
-    input("\nPresione Enter para volver...")
+    if not success or not posts:
+        print("No hay publicaciones.")
+        time.sleep(2)
+        return
+
+    index = 0
+
+    while True:
+        post = posts[index]
+
+        print("\033c", end="")
+        print(f"{post['title']}\n")
+
+        if post["type"] == "post":
+            for line in post["content"].split("\n"):
+                print(line)
+                time.sleep(0.3)
+        else:
+            print(post["content"])  # aquí luego puedes colorear keywords
+
+        print("\n[A] anterior | [S] siguiente | [Q] salir")
+        cmd = input("> ").lower()
+
+        if cmd == "s" and index < len(posts) - 1:
+            index += 1
+        elif cmd == "a" and index > 0:
+            index -= 1
+        elif cmd == "q":
+            break

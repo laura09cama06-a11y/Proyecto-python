@@ -17,7 +17,7 @@ def menu_usuario(username: str):
         try:
             respuesta=int(input("ingrese el numero de la opción deseada: "))
             if respuesta==1:
-                pass
+                p.ver_posts(7, username)  
             elif respuesta==2:
                 pass
             elif respuesta==3:
