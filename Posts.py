@@ -1,15 +1,15 @@
 import time
-from devspaces import follow_space, get_spaces_by_user, create_space
-import devspaces as ds  
+import devspaces.devspace as Ds
+
 """funcion para optener un spaces por usuario"""
 def get_space_by_user(username: str):
-    success, spaces = ds.get_spaces_by_user(username)
+    success, spaces = Ds.get_spaces_by_user(username)
 
     if success and spaces:
         #spaces = [[id, nombre,descripcion]]]]
         return spaces[0][0]
 
-    success_space, space = ds.create_space(
+    success_space, space = Ds.create_space(
         username,
         "General",
         "Space por defecto",
@@ -17,7 +17,7 @@ def get_space_by_user(username: str):
     )
 
     if success_space and space:
-        return space["1"]
+        return space[1]
 
     print("Error al crear el space:", space)
     return None
@@ -44,7 +44,7 @@ def crear_Post_nuevo(username: str):
     if post_type not in ("post", "snippet"):
         post_type = "post"
 
-    success, data = ds.create_post(
+    success, data = Ds.create_post(
         space_id,
         title,
         content,
@@ -94,8 +94,7 @@ def ver_posts(space_id: int, username: str):
         elif cmd == "q":
             break
 
-import time
-import devspaces.devspace as Ds
+
 
 # Colores ANSI
 AZUL = "\033[34m"
@@ -125,8 +124,6 @@ def mostrar_snippet(contenido: str):
             print(palabra, end=" ")
     print()
 
-import time
-import devspaces.devspace as Ds
 
 def ver_spaces_de_otro_usuario_interactivo():
     print("\033c", end="")
