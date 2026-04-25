@@ -1,6 +1,6 @@
 import time
 from devspaces import devspace
-
+import devspaces as ds
 """funcion para optener un spaces por usuario"""
 def get_space_by_user(username: str):
     success, spaces = devspace.get_spaces_by_user(username)
