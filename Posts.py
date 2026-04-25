@@ -1,15 +1,15 @@
 import time
-from devspaces import devspace as Ds
-import devspaces as ds 
+from devspaces import devspace
+
 """funcion para optener un spaces por usuario"""
 def get_space_by_user(username: str):
-    success, spaces = Ds.get_spaces_by_user(username)
+    success, spaces = devspace.get_spaces_by_user(username)
 
     if success and spaces:
         #spaces = [[id, nombre,descripcion]]]]
         return spaces[0][0]
 
-    success_space, space = Ds.create_space(
+    success_space, space = devspace.create_space(
         username,
         "General",
         "Space por defecto",
@@ -44,7 +44,7 @@ def crear_Post_nuevo(username: str):
     if post_type not in ("post", "snippet"):
         post_type = "post"
 
-    success, data = Ds.create_post(
+    success, data = devspace.create_post(
         space_id,
         title,
         content,
@@ -139,7 +139,7 @@ def ver_spaces_de_otro_usuario_interactivo():
         time.sleep(2)
         return None
 
-    success, spaces = Ds.get_spaces_by_user(otro_usuario)
+    success, spaces = devspace.get_spaces_by_user(otro_usuario)
 
     if not success or not spaces:
         print("Este usuario no tiene spaces disponibles.")

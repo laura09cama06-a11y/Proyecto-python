@@ -1,7 +1,7 @@
 #archivo para poner las funciones que se van a usar en el menu, para no saturar el codigo del menu
 import time
 from devspaces import devspace
-
+import devspaces as Ds
 
 def enter_to_continue():
     input("\nPresione Enter para continuar...")
@@ -128,32 +128,55 @@ def get_following_spaces(username):
     else:
         print("Error al obtener los espacios que sigues, {}.".format(username)) 
 
-def get_friend_requests(username):
-    print("\033c", end="")
-    print(" SOLICITUDES POR SPACE\n")
+def manage_friend_request(username: str, id_space: int, accept: bool) -> bool:
+    """
+    Acepta o rechaza una solicitud de seguimiento.
+    """
+    success = Ds.manage_friend_request(username, id_space, accept)
+    return success
+def gestionar_solicitudes(username):
+    success, followers = Ds.get_followers(username)
 
-    success, followers = devspace.get_followers(username)
-
-    if not success or not followers:
-        print("No tienes solicitudes.")
-        enter_to_continue()
+    if not success:
+        print("Error al obtener solicitudes.")
+        input("Presione Enter para continuar...")
         return
 
-    spaces = {}
+    pendientes = [f for f in followers if f[3] is False]
 
-    for follower in followers:
+    if not pendientes:
+        print("No tienes solicitudes pendientes.")
+        input("Presione Enter para continuar...")
+        return
+
+    print("\nSolicitudes de seguimiento:\n")
+
+    for i, follower in enumerate(pendientes, start=1):
         follower_username, space_id, space_name, accepted = follower
+        print(f"{i}. Usuario: {follower_username} | Space: {space_name}")
 
-        if space_name not in spaces:
-            spaces[space_name] = []
+    try:
+        opcion = int(input("\nSeleccione una solicitud (0 para salir): "))
+        if opcion == 0:
+            return
 
-        spaces[space_name].append((follower_username, accepted))
+        follower_username, space_id, space_name, accepted = pendientes[opcion - 1]
 
-    for space_name, seguidores in spaces.items():
-        print(f" Space: {space_name}")
-        for usuario, accepted in seguidores:
-            estado = " Aceptado" if accepted else "⏳ Pendiente"
-            print(f" - {usuario} ({estado})")
-        print("-" * 30)
+        print("\n1. Aceptar")
+        print("2. Rechazar")
+        decision = input("Seleccione una opción: ")
+
+        if decision == "1":
+            result = Ds.handle_follower(username, space_id, follower_username, True)
+        elif decision == "2":
+            result = Ds.handle_follower(username, space_id, follower_username, False)
+        else:
+            print("Opción no válida.")
+            return
+
+        print("✅ Operación realizada correctamente." if result else "❌ Error en la operación.")
+
+    except (ValueError, IndexError):
+        print("Entrada inválida.")
 
     input("\nPresione Enter para continuar...")

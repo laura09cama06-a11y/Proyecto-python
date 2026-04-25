@@ -18,7 +18,8 @@ def menu_usuario(username: str):
         "4-Ver Spaces seguidos\n"
         "5-Solicitudes de amistad\n"
         "6-Crear Post\n"
-        "7-Cerrar sesión\n")
+        "7-Ver Posts de un Space\n"
+        "8-Cerrar sesión\n")
         try:
             respuesta=int(input("ingrese el numero de la opción deseada: "))
             if respuesta==1:
@@ -30,15 +31,15 @@ def menu_usuario(username: str):
             elif respuesta==4:
                 f.get_following_spaces(username)
             elif respuesta==5:
-                f.get_friend_requests(username)
+                f.gestionar_solicitudes(username)
             elif respuesta == 6:
                 print("ENTRANDO A CREAR POST")
                 p.get_space_by_user(username) 
-            elif respuesta == 6:
+            elif respuesta == 7:
                 username_space = input("Ingrese el nombre del usuario del space que desea ver: ") 
                 nombre_spaces=f.show_spaces(username_space)
                 f.show_space_posts(username) 
-            elif respuesta == 7:
+            elif respuesta == 8:
                 print("\033c", end="")
                 print("Adios "+ username)
                 print("Gracias por usar DevSpace. ¡Hasta luego!")
@@ -125,6 +126,5 @@ def menu_principal():
             time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
             print("\033c", end="")
 
-if __name__ == "__main__":
-    menu_principal()
+
 
