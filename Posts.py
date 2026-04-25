@@ -1,5 +1,5 @@
 import time
-from devspaces.data import follow_space
+from devspaces import devspace
 import devspaces as ds  
 """funcion para optener un spaces por usuario"""
 def get_space_by_user(username: str):
@@ -60,7 +60,7 @@ def crear_Post_nuevo(username: str):
 
 """Función para seguir un espacio específico, solicitando al usuario el ID del espacio a seguir y utilizando la función follow_space de la API de DevSpace para seguir el espacio en el sistema."""
 def seguir_space_controller(username, space_id):
-    success, data = follow_space(username, space_id)
+    success, data = devspace.follow_space(username, space_id)
     return success, data
 
 """Funcion para ver los post de un usuario"""

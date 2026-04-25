@@ -3,6 +3,9 @@ import time
 from devspaces import devspace
 import devspaces as ds
 
+def enter_to_continue():
+    input("\nPresione Enter para continuar...")
+
 
 def mostrar_usuarios():
     success,usuarios = devspace.get_users()
@@ -28,6 +31,7 @@ def show_spaces_by_user():
             print("El usuario {} no tiene espacios registrados.".format(username))
     else:
         print("Error al obtener los espacios del usuario {}.".format(username))
+    enter_to_continue()
 
 def show_own_spaces(username:str):
     success, spaces = devspace.get_spaces_by_user(username)
@@ -36,6 +40,7 @@ def show_own_spaces(username:str):
             print("Tus espacios, {}:".format(username))
             for space in spaces:
                 print("- {}".format(space[0]))
+                enter_to_continue()
         else:
             print("No tienes espacios registrados, {}.".format(username))
             crear = input("¿Deseas crear un nuevo espacio? (s/n): ")
