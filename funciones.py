@@ -129,11 +129,13 @@ def get_following_spaces(username):
         print("Error al obtener los espacios que sigues, {}.".format(username)) 
 
 def manage_friend_request(username: str, id_space: int, accept: bool) -> bool:
+
     """
     Acepta o rechaza una solicitud de seguimiento.
     """
     success = Ds.manage_friend_request(username, id_space, accept)
     return success
+    
 def gestionar_solicitudes(username):
     success, followers = Ds.get_followers(username)
 

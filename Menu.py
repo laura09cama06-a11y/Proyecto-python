@@ -32,6 +32,7 @@ def menu_usuario(username: str):
                 f.get_following_spaces(username)
             elif respuesta==5:
                 f.gestionar_solicitudes(username)
+                print("Gestionando solicitudes de:", username)
             elif respuesta == 6:
                 print("ENTRANDO A CREAR POST")
                 p.get_space_by_user(username) 
