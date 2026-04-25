@@ -8,6 +8,7 @@ def menu_usuario(username: str):
     print("\033c", end="")
     print("\033[34m!Bienvenido al sistema de DevSpace " + username + "¡\033[0m\n")
     while True:
+        print("\033c", end="")
         print("\033[34mseleccione la accion que desea realizar: \033[0m")
         print("1-ver usuarios\n" 
         "2-Ver mis spaces\n" 
@@ -22,17 +23,17 @@ def menu_usuario(username: str):
             elif respuesta==2:
                 f.show_own_spaces(username)
             elif respuesta==3:
-                pass
+                f.get_following_spaces(username)
             elif respuesta==4:
-                pass   
+                f.get_friend_requests(username)
             elif respuesta == 5:
                 print("ENTRANDO A CREAR POST")
-                p.crear_Post_nuevo(username)
+                p.get_space_by_user(username)   
             elif respuesta == 6:
                 print("\033c", end="")
                 print("Adios "+ username)
                 print("Gracias por usar DevSpace. ¡Hasta luego!")
-                time.sleep(3)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
+                time.sleep(3)  # Esperar 3 segundos antes de salir para que el usuario pueda leer el mensaje
                 break
         except ValueError:
             print("\033c", end="")
@@ -40,7 +41,7 @@ def menu_usuario(username: str):
             time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
             print("\033c", end="")
 
-def menu_ingresar_usuario() -> bool:
+def menu_ingresar_usuario()->bool:
     """Establecer el menú de opciones para el ingreso de un usuario existente en el sistema de DevSpace
     """
     print("\033c", end="")
@@ -76,6 +77,7 @@ def menu_crear_cuenta_usuario():
     time.sleep(2)  # Esperar 2 segundos antes de regresar al menú principal
 
 def menu_principal():
+    """Establecer el menú principal del sistema de DevSpace, con opciones para crear un nuevo usuario, ingresar al sistema o salir del programa."""
     while True:
         """Establecer el menú de opciones principales del sistema en terminal, ingreso y creación de usuario
         """
@@ -86,9 +88,11 @@ def menu_principal():
         print ("2. Ingresar al sistema")
         print ("3. Salir")
 
-        respuesta_usuario = input("Ingrese el número de la opción deseada: ")   
+        respuesta_usuario = input("Ingrese el número de la opción deseada:")  
+
         if respuesta_usuario == "1":
             menu_crear_cuenta_usuario()
+
         elif respuesta_usuario == "2":
             if menu_ingresar_usuario():
                 print("\033c", end="")
@@ -96,7 +100,7 @@ def menu_principal():
             else:
                 print("\033c", end="")
                 print("Usuario no válido. Por favor, intente nuevamente.")
-            # Aquí puedes agregar la lógica para ingresar al sistema
+
         elif respuesta_usuario == "3":
             ##limpiamos la terminal antes de salir
             print("\033c", end="")
@@ -104,11 +108,14 @@ def menu_principal():
             time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
             print("\033c", end="")
             break
+
         else:
             print("\033c", end="")
 
             print("Opción no válida. Por favor, seleccione una opción válida.")
             time.sleep(2)  # Esperar 2 segundos antes de salir para que el usuario pueda leer el mensaje
             print("\033c", end="")
+
 if __name__ == "__main__":
- menu_principal()
+    menu_principal()
+

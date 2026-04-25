@@ -1,11 +1,13 @@
-import devspaces.devspace as ds
 import time
-
-def obtener_o_crear_space(username: str):
+from devspaces.data import follow_space
+import devspaces as ds  
+"""funcion para optener un spaces por usuario"""
+def get_space_by_user(username: str):
     success, spaces = ds.get_spaces_by_user(username)
 
-    if success and spaces and len(spaces[0]) > 0:
-        return spaces[0][0]["id"]
+    if success and spaces:
+        #spaces = [[id, nombre,descripcion]]]]
+        return spaces[0][0]
 
     success_space, space = ds.create_space(
         username,
@@ -15,17 +17,19 @@ def obtener_o_crear_space(username: str):
     )
 
     if success_space and space:
-        return space["id"]
+        return space["1"]
 
     print("Error al crear el space:", space)
     return None
 
-
+"""funcion para crear un nuevo post"""
 def crear_Post_nuevo(username: str):
     print("\n=== Crear un nuevo post ===\n")
 
-    space_id = obtener_o_crear_space(username)
+    space_id = get_space_by_user(username)
     if not space_id:
+        print("No se pudo obtener un space.")
+        time.sleep(2)
         return
 
     title = input("Ingrese el título del post: ").strip()
@@ -55,20 +59,9 @@ def crear_Post_nuevo(username: str):
     time.sleep(2)
 
 """Función para seguir un espacio específico, solicitando al usuario el ID del espacio a seguir y utilizando la función follow_space de la API de DevSpace para seguir el espacio en el sistema."""
-def seguir_space(username: str):
-    try:
-        space_id = int(input("ID del space a seguir: "))
-    except:
-        print("ID inválido")
-        return
-
-    success, data = ds.follow_space(username, space_id)
-
-    if success:
-        print(" Ahora sigues este space")
-    else:
-        print(" Error:", data)
-        pass
+def seguir_space_controller(username, space_id):
+    success, data = follow_space(username, space_id)
+    return success, data
 
 """Funcion para ver los post de un usuario"""
 def ver_posts(space_id: int, username: str):
@@ -105,3 +98,4 @@ def ver_posts(space_id: int, username: str):
             index -= 1
         elif cmd == "q":
             break
+

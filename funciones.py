@@ -1,6 +1,8 @@
 #archivo para poner las funciones que se van a usar en el menu, para no saturar el codigo del menu
 import time
 from devspaces import devspace
+import devspaces as ds
+
 
 def mostrar_usuarios():
     success,usuarios = devspace.get_users()
@@ -59,3 +61,45 @@ def create_space(username:str):
     else:
         print("Error al crear el espacio. Por favor, intente nuevamente.")
 
+def get_following_spaces(username):
+    print("\033c", end="")
+    success, spaces = devspace.get_following_spaces(username)
+    if success:
+        if spaces:
+            print("Espacios que sigues, {}:".format(username))
+            for space in spaces:
+                print("- {}".format(space[0]))
+        else:
+            print("No sigues ningún espacio registrado, {}.".format(username))
+    else:
+        print("Error al obtener los espacios que sigues, {}.".format(username)) 
+
+def get_friend_requests(username):
+    print("\033c", end="")
+    print(" SOLICITUDES POR SPACE\n")
+
+    success, followers = ds.get_followers(username)
+
+    if not success or not followers:
+        print("No tienes solicitudes.")
+        input("\nPresione Enter para continuar...")
+        return
+
+    spaces = {}
+
+    for follower in followers:
+        follower_username, space_id, space_name, accepted = follower
+
+        if space_name not in spaces:
+            spaces[space_name] = []
+
+        spaces[space_name].append((follower_username, accepted))
+
+    for space_name, seguidores in spaces.items():
+        print(f" Space: {space_name}")
+        for usuario, accepted in seguidores:
+            estado = " Aceptado" if accepted else "⏳ Pendiente"
+            print(f" - {usuario} ({estado})")
+        print("-" * 30)
+
+    input("\nPresione Enter para continuar...")
