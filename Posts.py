@@ -1,5 +1,5 @@
 import time
-from devspaces.data import follow_space
+from devspaces import follow_space, get_spaces_by_user, create_space
 import devspaces as ds  
 """funcion para optener un spaces por usuario"""
 def get_space_by_user(username: str):
@@ -58,11 +58,6 @@ def crear_Post_nuevo(username: str):
 
     time.sleep(2)
 
-"""Función para seguir un espacio específico, solicitando al usuario el ID del espacio a seguir y utilizando la función follow_space de la API de DevSpace para seguir el espacio en el sistema."""
-def seguir_space_controller(username, space_id):
-    success, data = follow_space(username, space_id)
-    return success, data
-
 """Funcion para ver los post de un usuario"""
 def ver_posts(space_id: int, username: str):
     print("\n=== Posts del space ===\n")
@@ -87,7 +82,7 @@ def ver_posts(space_id: int, username: str):
                 print(line)
                 time.sleep(0.3)
         else:
-            print(post["content"])  # aquí luego puedes colorear keywords
+            print(post["content"])  
 
         print("\n[A] anterior | [S] siguiente | [Q] salir")
         cmd = input("> ").lower()
@@ -99,3 +94,81 @@ def ver_posts(space_id: int, username: str):
         elif cmd == "q":
             break
 
+import time
+import devspaces.devspace as Ds
+
+# Colores ANSI
+AZUL = "\033[34m"
+AMARILLO = "\033[33m"
+RESET = "\033[0m"
+
+KEYWORDS = {
+    "def", "if", "else", "elif", "return", "for", "while",
+    "break", "continue", "import", "from", "class",
+    "try", "except", "True", "False", "None"
+}
+
+
+def mostrar_texto_animado(contenido: str):
+    """Muestra texto línea por línea con animación"""
+    for linea in contenido.split("\n"):
+        print(linea)
+        time.sleep(0.3)
+
+
+def mostrar_snippet(contenido: str):
+    """Muestra código resaltando palabras clave"""
+    for palabra in contenido.split():
+        if palabra in KEYWORDS:
+            print(f"{AMARILLO}{palabra}{RESET}", end=" ")
+        else:
+            print(palabra, end=" ")
+    print()
+
+import time
+import devspaces.devspace as Ds
+
+def ver_spaces_de_otro_usuario_interactivo():
+    print("\033c", end="")
+    otro_usuario = input("Ingrese el nombre del usuario: ").strip()
+
+    if not otro_usuario:
+        print("Debe ingresar un nombre de usuario.")
+        time.sleep(2)
+        return None
+
+    success, spaces = Ds.get_spaces_by_user(otro_usuario)
+
+    if not success or not spaces:
+        print("Este usuario no tiene spaces disponibles.")
+        time.sleep(2)
+        return None
+
+    index = 0
+    total = len(spaces)
+
+    while True:
+        print("\033c", end="")
+
+        space_id, nombre, descripcion = spaces[index]
+
+        print(f" Usuario: {otro_usuario}")
+        print(" SPACE")
+        print("-" * 40)
+        print(f"Nombre: {nombre}")
+        print(f"Descripción: {descripcion}")
+        print(f"\nSpace {index + 1} de {total}")
+
+        print("\nOpciones:")
+        print("[A] Anterior | [S] Siguiente | [E] Entrar | [Q] Salir")
+
+        opcion = input("> ").lower()
+
+        if opcion == "s" and index < total - 1:
+            index += 1
+        elif opcion == "a" and index > 0:
+            index -= 1
+        elif opcion == "e":
+            return space_id    
+        elif opcion == "q":
+            return None
