@@ -28,28 +28,30 @@ def show_spaces(username:str):
             nombre_space = input("Ingrese el nombre del space al que desea acceder: ")
             return nombre_space
         else:
-            print("No tienes espacios registrados, {}.".format(username))
+            print("No tiene espacios registrados, {}.".format(username))
     else:
-        print("Error al obtener tus espacios, {}.".format(username))
+        print("Error al obtener espacios, {}.".format(username))
 
 
 def show_space_posts(username: str):
     print("Posts del space\n")
-    id_space = devspace.get_spaces_by_user(username)
-    if not id_space[0] or not id_space[1]:
-        print("No se pudo obtener el ID del space.")
-        time.sleep(2)
-        return
-    success, posts = devspace.get_posts(id_space, username)
-    if success:
-        if posts:
-            print("Posts del space:")
-            for post in posts:
-                print("- {}".format(post[0]))
+    success,id_space = devspace.get_spaces_by_user(username)
+    if success and id_space:
+        space_id = id_space[0][1]  # Obtener el ID del primer espacio
+        success, posts = devspace.get_posts(space_id, username)
+        if success:
+            if posts:
+                print("Posts del space {}:".format(username))
+                for post in posts:
+                    print("- {} (ID: {})".format(post[0], post[1]))
+                
+            else:
+                print("No hay posts registrados en este space.")
+        
         else:
-            print("No hay posts registrados en este space.")
+            print("Error al obtener los posts del space.")
     else:
-        print("Error al obtener los posts del space.")
+        print("Error al obtener el ID del space.")
     enter_to_continue()
 
 def mostrar_usuarios():
