@@ -67,7 +67,7 @@ def seguir_space_controller(username, space_id):
 def ver_posts(space_id: int, username: str):
     print("\n=== Posts del space ===\n")
 
-    success, posts = ds.get_posts(space_id, username)
+    success, posts = devspace.get_posts(space_id, username)
 
     if not success or not posts:
         print("No hay publicaciones.")

@@ -15,7 +15,8 @@ def menu_usuario(username: str):
         "3-Ver Spaces seguidos\n"
         "4-Solicitudes de amistad\n"
         "5-Crear Post\n"
-        "6-Cerrar sesión\n")
+        "6-ver posts de un space\n"
+        "7-Cerrar sesión\n")
         try:
             respuesta=int(input("ingrese el numero de la opción deseada: "))
             if respuesta==1:
@@ -28,8 +29,12 @@ def menu_usuario(username: str):
                 f.get_friend_requests(username)
             elif respuesta == 5:
                 print("ENTRANDO A CREAR POST")
-                p.get_space_by_user(username)   
+                p.get_space_by_user(username) 
             elif respuesta == 6:
+                username_space = input("Ingrese el nombre del usuario del space que desea ver: ") 
+                f.show_spaces(username_space)
+                f.show_space_posts(username) 
+            elif respuesta == 7:
                 print("\033c", end="")
                 print("Adios "+ username)
                 print("Gracias por usar DevSpace. ¡Hasta luego!")
