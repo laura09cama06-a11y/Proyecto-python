@@ -1,8 +1,58 @@
 #archivo para poner las funciones que se van a usar en el menu, para no saturar el codigo del menu
 import time
 from devspaces import devspace
-import devspaces as ds
 
+
+def enter_to_continue():
+    input("\nPresione Enter para continuar...")
+
+def access_space(username:str):
+    print("\033c", end="")
+    print("Acceder a un space\n")
+    space_id = input("Ingrese el ID del space al que desea acceder: ")
+    if not space_id.isdigit():
+        print("ID inválido. Por favor, ingrese un número válido.")
+        time.sleep(2)
+        return None
+    return int(space_id)
+
+def show_spaces(username:str):
+    print("\033c", end="")
+    print("Espacios disponibles\n")
+    success, spaces = devspace.get_spaces_by_user(username)
+    if success:
+        if spaces:
+            print("Espacios de {}:".format(username))
+            for space in spaces:
+                print("- {} (ID: {})".format(space[0], space[1]))
+            nombre_space = input("Ingrese el nombre del space al que desea acceder: ")
+            return nombre_space
+        else:
+            print("No tiene espacios registrados, {}.".format(username))
+    else:
+        print("Error al obtener espacios, {}.".format(username))
+
+
+def show_space_posts(username: str):
+    print("Posts del space\n")
+    success,id_space = devspace.get_spaces_by_user(username)
+    if success and id_space:
+        space_id = id_space[0][1]  # Obtener el ID del primer espacio
+        success, posts = devspace.get_posts(space_id, username)
+        if success:
+            if posts:
+                print("Posts del space {}:".format(username))
+                for post in posts:
+                    print("- {} (ID: {})".format(post[0], post[1]))
+                
+            else:
+                print("No hay posts registrados en este space.")
+        
+        else:
+            print("Error al obtener los posts del space.")
+    else:
+        print("Error al obtener el ID del space.")
+    enter_to_continue()
 
 def mostrar_usuarios():
     success,usuarios = devspace.get_users()
@@ -28,6 +78,7 @@ def show_spaces_by_user():
             print("El usuario {} no tiene espacios registrados.".format(username))
     else:
         print("Error al obtener los espacios del usuario {}.".format(username))
+    enter_to_continue()
 
 def show_own_spaces(username:str):
     success, spaces = devspace.get_spaces_by_user(username)
@@ -36,6 +87,7 @@ def show_own_spaces(username:str):
             print("Tus espacios, {}:".format(username))
             for space in spaces:
                 print("- {}".format(space[0]))
+                enter_to_continue()
         else:
             print("No tienes espacios registrados, {}.".format(username))
             crear = input("¿Deseas crear un nuevo espacio? (s/n): ")
@@ -69,8 +121,10 @@ def get_following_spaces(username):
             print("Espacios que sigues, {}:".format(username))
             for space in spaces:
                 print("- {}".format(space[0]))
+                enter_to_continue()
         else:
             print("No sigues ningún espacio registrado, {}.".format(username))
+            enter_to_continue()
     else:
         print("Error al obtener los espacios que sigues, {}.".format(username)) 
 
@@ -78,11 +132,11 @@ def get_friend_requests(username):
     print("\033c", end="")
     print(" SOLICITUDES POR SPACE\n")
 
-    success, followers = ds.get_followers(username)
+    success, followers = devspace.get_followers(username)
 
     if not success or not followers:
         print("No tienes solicitudes.")
-        input("\nPresione Enter para continuar...")
+        enter_to_continue()
         return
 
     spaces = {}

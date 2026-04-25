@@ -33,7 +33,11 @@ def menu_usuario(username: str):
                 f.get_friend_requests(username)
             elif respuesta == 6:
                 print("ENTRANDO A CREAR POST")
-                p.get_space_by_user(username)   
+                p.get_space_by_user(username) 
+            elif respuesta == 6:
+                username_space = input("Ingrese el nombre del usuario del space que desea ver: ") 
+                nombre_spaces=f.show_spaces(username_space)
+                f.show_space_posts(username) 
             elif respuesta == 7:
                 print("\033c", end="")
                 print("Adios "+ username)
