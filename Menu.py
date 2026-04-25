@@ -35,11 +35,16 @@ def menu_usuario(username: str):
                 print("Gestionando solicitudes de:", username)
             elif respuesta == 6:
                 print("ENTRANDO A CREAR POST")
-                p.get_space_by_user(username) 
+                username_space = input("Ingrese el nombre del usuario del space donde desea crear el post: ")
+                id=f.show_spaces(username_space)
+                p.crear_post_interactivo(id, username)
+
+                 
             elif respuesta == 7:
-                username_space = input("Ingrese el nombre del usuario del space que desea ver: ") 
-                nombre_spaces=f.show_spaces(username_space)
-                f.show_space_posts(username) 
+                print("ENTRANDO A VER POSTS")
+                username_space = input("Ingrese el nombre del usuario del space que desea ver: ")
+                id=f.show_spaces(username_space)
+                f.show_space_posts(id, username, username_space)
             elif respuesta == 8:
                 print("\033c", end="")
                 print("Adios "+ username)

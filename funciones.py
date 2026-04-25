@@ -24,35 +24,30 @@ def show_spaces(username:str):
         if spaces:
             print("Espacios de {}:".format(username))
             for space in spaces:
-                print("- {} (ID: {})".format(space[0], space[1]))
-            nombre_space = input("Ingrese el nombre del space al que desea acceder: ")
-            return nombre_space
+                print("- {} (ID: {})".format(space[1], space[0]))
+            nombre_space = input("Ingrese el id del space al que desea acceder: ")
+            return int(nombre_space)
         else:
             print("No tiene espacios registrados, {}.".format(username))
     else:
         print("Error al obtener espacios, {}.".format(username))
 
 
-def show_space_posts(username: str):
-    print("Posts del space\n")
-    success,id_space = devspace.get_spaces_by_user(username)
-    if success and id_space:
-        space_id = id_space[0][1]  # Obtener el ID del primer espacio
-        success, posts = devspace.get_posts(space_id, username)
-        if success:
-            if posts:
-                print("Posts del space {}:".format(username))
-                for post in posts:
-                    print("- {} (ID: {})".format(post[0], post[1]))
-                
-            else:
-                print("No hay posts registrados en este space.")
-        
+def show_space_posts(id,username: str,space_name: str):
+    print("\033c", end="")
+    print("Posts del space {}\n".format(space_name))
+    success, posts = devspace.get_posts(id, username)
+    if success:
+        if posts and isinstance(posts, list) and len(posts) > 0:
+            for post in posts:
+                print("- {}: {}".format(post[1], post[2]))
         else:
-            print("Error al obtener los posts del space.")
+            print("No hay publicaciones en este space.")
     else:
-        print("Error al obtener el ID del space.")
+        print("Error al obtener las publicaciones del space.")
     enter_to_continue()
+
+
 
 def mostrar_usuarios():
     success,usuarios = devspace.get_users()
@@ -86,8 +81,11 @@ def show_own_spaces(username:str):
         if spaces:
             print("Tus espacios, {}:".format(username))
             for space in spaces:
-                print("- {}".format(space[0]))
-                enter_to_continue()
+                print("- {}".format(space[1]))
+            enter_to_continue()
+            opcion = input("¿Deseas crear un nuevo espacio? (s/n): ")
+            if opcion.lower() == 's':
+                create_space(username)
         else:
             print("No tienes espacios registrados, {}.".format(username))
             crear = input("¿Deseas crear un nuevo espacio? (s/n): ")

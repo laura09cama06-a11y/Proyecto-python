@@ -69,7 +69,7 @@ def ver_posts(space_id: int, username: str):
 
     success, posts = ds.get_posts(space_id, username)
 
-    if not success or not posts:
+    if not success or not posts or not isinstance(posts, list) or len(posts) == 0:
         print("No hay publicaciones.")
         time.sleep(2)
         return
@@ -78,16 +78,18 @@ def ver_posts(space_id: int, username: str):
 
     while True:
         post = posts[index]
+        # post es una lista: [id, título, contenido, tipo]
+        post_id, post_title, post_content, post_type = post[0], post[1], post[2], post[3]
 
         print("\033c", end="")
-        print(f"{post['title']}\n")
+        print(f"{post_title}\n")
 
-        if post["type"] == "post":
-            for line in post["content"].split("\n"):
+        if post_type == "post":
+            for line in post_content.split("\n"):
                 print(line)
                 time.sleep(0.3)
         else:
-            print(post["content"])  
+            print(post_content)  
 
         print("\n[A] anterior | [S] siguiente | [Q] salir")
         cmd = input("> ").lower()
@@ -174,3 +176,25 @@ def ver_spaces_de_otro_usuario_interactivo():
             return space_id    
         elif opcion == "q":
             return None
+        
+def crear_post_interactivo(space_id: int, username: str):
+    print("\n=== Crear un nuevo post ===\n")
+
+    title = input("Ingrese el título del post: ").strip()
+    content = input("Ingrese el contenido del post: ").strip()
+    post_type = input("Tipo de post (post / snippet): ").lower().strip()
+
+    if not title or not content:
+        print(" El título y el contenido no pueden estar vacíos.")
+        time.sleep(2)
+        return
+    sucess,data = devspace.create_post(
+        space_id,
+        title,
+        content,
+        post_type
+    )
+    if sucess:
+        print(" Post creado exitosamente.")
+    else:
+        print(" Error al crear el post:", data)
